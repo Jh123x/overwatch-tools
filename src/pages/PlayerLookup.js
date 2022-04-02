@@ -1,4 +1,4 @@
-import '../App.css';
+import './PlayerLookup.css';
 import { PlayerLookupForm } from '../components/PlayerLookupForm';
 
 function PlayerLookupPage() {
