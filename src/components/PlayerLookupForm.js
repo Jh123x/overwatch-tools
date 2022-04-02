@@ -24,7 +24,7 @@ export class PlayerLookupForm extends React.Component {
   }
 
   render_response(response) {
-    if (response.error === 'Player not found!' || response.status == 404) {
+    if (response.error === 'Player not found!' || response.status === 404) {
       return 'Player is not found!';
     }
     if (response.private) {
