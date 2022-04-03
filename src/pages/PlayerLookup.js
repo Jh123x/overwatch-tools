@@ -16,6 +16,7 @@ function PlayerLookupPage() {
           <p>It is in the format name#tag</p>
         </div>
         <PlayerLookupForm />
+        <br />
       </header>
     </div>
   );
