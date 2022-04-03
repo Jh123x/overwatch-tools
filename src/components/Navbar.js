@@ -8,6 +8,7 @@ export class Navbar extends React.Component {
       <div className='topnav'>
         <Link to='/'>Home</Link>
         <Link to='/lookup'>Player Lookup</Link>
+        <Link to='/team-balancing'>Team Balancing</Link>
       </div>
     );
   }

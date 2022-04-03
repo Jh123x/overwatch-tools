@@ -1,5 +1,6 @@
 export function player_balance_teams(players) {
   /// Balancing the number of players in an in-house game
+  /// Player contains {playerName, battleTag, tank, support, damage}
   /// @returns {Array} containing the players in the team
   if (players.length <= 1) {
     return [players, []];
@@ -8,8 +9,14 @@ export function player_balance_teams(players) {
     return [[players[0]], [players[1]]];
   }
 
-  // TODO: Implement a better algorithm for balancing teams
-  return [[], []];
+  let team1 = [];
+  let team2 = [];
+  // let team1_score = 0;
+  // let team2_score = 0;
+  // for (let i = 0; i < players.length || team1.length + team2.length == 12 ; i++) {
+  //   let player = players[i];
+  // }
+  return [team1, team2];
 }
 
 export function player_matching(players, no_of_players, target_rank) {

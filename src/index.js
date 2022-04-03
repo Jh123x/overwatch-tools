@@ -7,6 +7,7 @@ import { Navbar } from './components/Navbar';
 // Pages
 import PlayerLookupPage from './pages/PlayerLookup';
 import Homepage from './pages/Homepage';
+import { TeamBalancingPage } from './pages/TeamBalancing';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -15,6 +16,7 @@ ReactDOM.render(
     <Navbar />
     <Routes>
       <Route path='/' element={<Homepage />} />
+      <Route path='/team-balancing' element={<TeamBalancingPage />} />
       <Route path='/lookup' element={<PlayerLookupPage />} />
     </Routes>
   </BrowserRouter>,
