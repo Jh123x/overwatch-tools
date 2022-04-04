@@ -120,3 +120,16 @@ test('Player balance 4 players', () => {
     [players[1], players[3]],
   ]);
 });
+
+test('Player balance 5 players', () => {
+  let players = [];
+  for(let i = 0; i < 5; i++){
+    players.push(create_player(`Player${i}`, `#${i}`, 10 - i));
+  }
+  let r = player_balance_teams(players);
+  console.log(r);
+  expect(r).toEqual([
+    [players[0], players[2], players[4]],
+    [players[1], players[3]],
+  ]);
+})
