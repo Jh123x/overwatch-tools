@@ -15,8 +15,8 @@ export function player_balance_teams(players) {
     var keyA = parseInt(a.overall),
       keyB = parseInt(b.overall);
     // Compare the 2 rating
-    if (keyA < keyB) return -1;
-    if (keyA > keyB) return 1;
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
     return 0;
   });
   for (let i = 0; i < players.length; ++i) {
