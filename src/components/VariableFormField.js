@@ -50,42 +50,83 @@ export class VariableForm extends React.Component {
     }
 
     populateResults(results) {
+        this.setState({ results: "Generating Teams" });
         let [team1, team2] = player_balance_teams(results);
-        console.log(team1, team2);
-
+        let result = (<div>
+            <h3>Team 1</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {team1.map(({ playerName, battleTag, role }) => (
+                        <tr key={playerName + "#" + battleTag}>
+                            <td>{playerName + "#" + battleTag}</td>
+                            <td>{role}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <h3>Team 2</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player</th>
+                        <th>role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {team2.map(({ playerName, battleTag, role }) => (
+                        <tr key={playerName + "#" + battleTag}>
+                            <td>{playerName + "#" + battleTag}</td>
+                            <td>{role}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>);
+        this.setState({ results: result });
     }
 
     handleSubmit(event) {
+        if (this.state.formValues.size === 0) {
+            alert("Please add players to the team!");
+            return;
+        }
         event.preventDefault();
         let results = []
         let values = [...this.state.formValues];
         for (let i = 0; i < values.length; i++) {
             let player = values[i];
-            player.tank = document.getElementById(player.playerName + "_" + player.battleTag + "_tank").value;
-            player.damage = document.getElementById(player.playerName + "_" + player.battleTag + "_damage").value;
-            player.support = document.getElementById(player.playerName + "_" + player.battleTag + "_supports").value;
-            player.overall = document.getElementById(player.playerName + "_" + player.battleTag + "_overall").value;
+            player.rating = document.getElementById(player.playerName + "_" + player.battleTag + "_overall").value;
             results.push(player);
         }
         this.populateResults(results);
     }
 
-    async fillLookup(playerName, battleTag) {
+    async fillLookup(playerName, battleTag, role) {
+        
         let result = await player_lookup(playerName, battleTag);
-        let rating_dict = {
-            tank: 0,
-            damage: 0,
-            support: 0,
-            overall: 0
-        };
-        let comp_ratings = result.ratings || [];
-        for (let i = 0; i < comp_ratings.length; i++) {
-            let rating = comp_ratings[i];
-            rating_dict[rating.role] = rating_dict[rating.role] + rating.level;
+        const id = playerName + "_" + battleTag + "_overall";
+        const elem = document.getElementById(id);
+        if (role === "Overall") {
+            elem.value = result.rating || 0;
+            return;
         }
-        document.getElementById(playerName + "_" + battleTag + "_tank").value = rating_dict.tank;
-        document.getElementById(playerName + "_" + battleTag + "_damage").value = rating_dict.damage;
-        document.getElementById(playerName + "_" + battleTag + "_supports").value = rating_dict.support;
+        if (result.ratings === null) {
+            return 0;
+        }
+        for(let i = 0; i < result.ratings.length; ++i){
+            let curr = result.ratings[i];
+            if(curr.role === role.toLowerCase()){
+                elem.value = curr.level;
+                return;
+            }
+        }
+        elem.value = 0;
     }
 
     displayResults() {
@@ -95,14 +136,25 @@ export class VariableForm extends React.Component {
                 <th>{playerName}</th>
                 <th>{battleTag}</th>
                 <th>
-                    <label>Tank</label><input id={playerName + "_" + battleTag + "_tank"} type="number" /><br />
-                    <label>Damage</label><input id={playerName + "_" + battleTag + "_damage"} type="number" /><br />
-                    <label>Support</label><input id={playerName + "_" + battleTag + "_supports"} type="number" /><br />
-                    <label>Overall</label><input id={playerName + "_" + battleTag + "_overall"} type="number" /><br />
+                    <label>Rating</label><input id={playerName + "_" + battleTag + "_overall"} type="number" /><br />
                 </th>
                 <th>
+                    <select id={playerName+"_role"}>
+                        <option>
+                            Overall
+                        </option>
+                        <option>
+                            Tank
+                        </option>
+                        <option>
+                            Damage
+                        </option>
+                        <option>
+                            Support
+                        </option>
+                    </select>
                     <button className="button remove" onClick={() => this.removeFormField(playerName, battleTag)}>Remove</button>
-                    <button className="button lookup" onClick={async () => this.fillLookup(playerName, battleTag)}>Lookup</button>
+                    <button className="button lookup" onClick={async () => this.fillLookup(playerName, battleTag, document.getElementById(playerName + "_role").value)}>Lookup</button>
                 </th>
             </tr>
         ));
