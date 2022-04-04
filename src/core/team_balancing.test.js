@@ -77,6 +77,14 @@ const private_player = {
   ratings: null,
 };
 
+function create_player(name, tag, rating){
+  return {
+    name: name,
+    battleTag: tag,
+    overall: rating,
+  };
+}
+
 // Player Matching tests
 test('Player match Empty players', () => {
   expect(player_matching([])).toEqual([]);
@@ -99,5 +107,16 @@ test('Player balance Two Players', () => {
   expect(player_balance_teams([public_player, public_player])).toEqual([
     [public_player],
     [public_player],
+  ]);
+});
+
+test('Player balance 4 players', () => {
+  let players = [];
+  for(let i = 0; i < 4; i++){
+    players.push(create_player(`Player${i}`, `#${i}`, i));
+  }
+  expect(player_balance_teams(players)).toEqual([
+    [players[0], players[2]],
+    [players[1], players[3]],
   ]);
 });

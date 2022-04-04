@@ -1,6 +1,6 @@
 export function player_balance_teams(players) {
   /// Balancing the number of players in an in-house game
-  /// Player contains {playerName, battleTag, tank, support, damage}
+  /// Player contains {playerName, battleTag, overall}
   /// @returns {Array} containing the players in the team
   if (players.length <= 1) {
     return [players, []];
@@ -11,13 +11,25 @@ export function player_balance_teams(players) {
 
   let team1 = [];
   let team2 = [];
-  // let team1_score = 0;
-  // let team2_score = 0;
-  // for (let i = 0; i < players.length || team1.length + team2.length == 12 ; i++) {
-  //   let player = players[i];
-  // }
+  players.sort(function (a, b) {
+    var keyA = parseInt(a.overall),
+      keyB = parseInt(b.overall);
+    // Compare the 2 rating
+    if (keyA < keyB) return -1;
+    if (keyA > keyB) return 1;
+    return 0;
+  });
+  for (let i = 0; i < players.length; ++i) {
+    if (i % 2 === 0) {
+      team1.push(players[i]);
+      continue
+    }
+    team2.push(players[i]);
+  }
   return [team1, team2];
 }
+
+// TODO: Add algorithm to take into account roles.
 
 export function player_matching(players, no_of_players, target_rank) {
   /// Matching the number of players in a competitive game for a target rank.
