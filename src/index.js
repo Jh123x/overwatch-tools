@@ -8,6 +8,7 @@ import { Navbar } from './components/Navbar';
 import PlayerLookupPage from './pages/PlayerLookup';
 import Homepage from './pages/Homepage';
 import { TeamBalancingPage } from './pages/TeamBalancing';
+import { RandomPlayerPage } from './pages/RandomPlayerPick';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -18,6 +19,7 @@ ReactDOM.render(
       <Route path='/' element={<Homepage />} />
       <Route path='/team-balancing' element={<TeamBalancingPage />} />
       <Route path='/lookup' element={<PlayerLookupPage />} />
+      <Route path='/random-player-pick' element={<RandomPlayerPage />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root')
