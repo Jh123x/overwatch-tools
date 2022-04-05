@@ -3,7 +3,7 @@
  */
 
 import { player_lookup } from './api';
-jest.setTimeout(10000);
+
 test('Player lookup API success test', async () => {
   let result = await player_lookup('Krusher98', '1666');
   expect(result).toBeDefined();
