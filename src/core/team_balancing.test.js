@@ -115,10 +115,9 @@ test('Player balance 4 players', () => {
   for(let i = 0; i < 4; i++){
     players.push(create_player(`Player${i}`, `#${i}`, i));
   }
-  expect(player_balance_teams(players)).toEqual([
-    [players[0], players[2]],
-    [players[1], players[3]],
-  ]);
+  let [team1, team2] = player_balance_teams(players);
+  expect(new Set(team1.map(player => player.name))).toEqual(new Set(['Player0', 'Player3']));
+  expect(new Set(team2.map(player => player.name))).toEqual(new Set(['Player1', 'Player2']));
 });
 
 test('Player balance 5 players', () => {
@@ -126,10 +125,7 @@ test('Player balance 5 players', () => {
   for(let i = 0; i < 5; i++){
     players.push(create_player(`Player${i}`, `#${i}`, 10 - i));
   }
-  let r = player_balance_teams(players);
-  console.log(r);
-  expect(r).toEqual([
-    [players[0], players[2], players[4]],
-    [players[1], players[3]],
-  ]);
+  let [team1, team2] = player_balance_teams(players);
+  expect(new Set(team1.map(p => p.name))).toEqual(new Set(['Player0', 'Player3', 'Player4']));
+  expect(new Set(team2.map(p => p.name))).toEqual(new Set(['Player1', 'Player2']));
 })
