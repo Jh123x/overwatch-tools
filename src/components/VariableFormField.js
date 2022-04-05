@@ -108,10 +108,15 @@ export class VariableForm extends React.Component {
     }
 
     async fillLookup(playerName, battleTag, role) {
-        
+
         let result = await player_lookup(playerName, battleTag);
         const id = playerName + "_" + battleTag + "_overall";
         const elem = document.getElementById(id);
+        if (result.rating === null) {
+            elem.value = 0;
+            console.error(`Error: ${result.error}`);
+            return;
+        }
         if (role === "Overall") {
             elem.value = result.rating || 0;
             return;
@@ -119,9 +124,9 @@ export class VariableForm extends React.Component {
         if (result.ratings === null) {
             return 0;
         }
-        for(let i = 0; i < result.ratings.length; ++i){
+        for (let i = 0; i < result.ratings.length; ++i) {
             let curr = result.ratings[i];
-            if(curr.role === role.toLowerCase()){
+            if (curr.role === role.toLowerCase()) {
                 elem.value = curr.level;
                 return;
             }
@@ -139,7 +144,7 @@ export class VariableForm extends React.Component {
                     <label>Rating</label><input id={playerName + "_" + battleTag + "_overall"} type="number" /><br />
                 </th>
                 <th>
-                    <select id={playerName+"_role"}>
+                    <select id={playerName + "_role"}>
                         <option>
                             Overall
                         </option>
