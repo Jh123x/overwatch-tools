@@ -1,3 +1,5 @@
+import { Button, Input } from '@mui/material';
+import styles from './PlayerLookupForm.module.css';
 import React from 'react';
 import { player_lookup } from '../core/api';
 
@@ -7,7 +9,7 @@ export class PlayerLookupForm extends React.Component {
     this.state = {
       battleTag: '',
       playerName: '',
-      result: 'Please Key in a name to get started',
+      result: 'Please key in a name and battletag to get started',
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -74,6 +76,13 @@ export class PlayerLookupForm extends React.Component {
     this.setState({
       result: `Searching for ${this.state.playerName}#${this.state.battleTag}...`,
     });
+    if (this.state.playerName === '' || this.state.battleTag === '') {
+      this.setState({
+        result: 'Please fill in all the fields',
+      });
+      return;
+    }
+
     player_lookup(
       encodeURI(this.state.playerName),
       encodeURI(this.state.battleTag)
@@ -99,23 +108,32 @@ export class PlayerLookupForm extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <label>Player Name: </label>
           <br />
-          <input
+          <Input
             type='text'
             name='playerName'
             placeholder='Player Name'
+            className={styles.input}
             onChange={this.handleChange}
           />
           <br />
           <label>Battle Tag: </label>
           <br />
-          <input
+          <Input
             type='number'
             name='battleTag'
-            placeholder='Player Tag'
+            placeholder='Battle Tag'
+            className={styles.input}
             onChange={this.handleChange}
           />
           <br />
-          <input type='submit' value='Search' />
+          <br />
+          <Button
+            type="submit"
+            variant="contained"
+            id={styles.search_button}
+          >
+            Search
+          </Button>
         </form>
         <br />
         <div id='result'>{this.state.result}</div>
