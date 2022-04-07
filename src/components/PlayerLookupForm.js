@@ -1,7 +1,8 @@
+import React from 'react';
 import { Button, Input } from '@mui/material';
 import styles from './PlayerLookupForm.module.css';
-import React from 'react';
 import { player_lookup } from '../core/api';
+
 
 export class PlayerLookupForm extends React.Component {
   constructor(props) {
@@ -112,7 +113,7 @@ export class PlayerLookupForm extends React.Component {
             type='text'
             name='playerName'
             placeholder='Player Name'
-            className={styles.input}
+            className={styles.text_color}
             onChange={this.handleChange}
           />
           <br />
@@ -122,8 +123,11 @@ export class PlayerLookupForm extends React.Component {
             type='number'
             name='battleTag'
             placeholder='Battle Tag'
-            className={styles.input}
+            className={styles.text_color}
             onChange={this.handleChange}
+            style= {{
+              color: '#fa9c1e'
+            }}
           />
           <br />
           <br />
