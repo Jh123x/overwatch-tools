@@ -14,7 +14,6 @@ function cleanup_cache(){
   while (cache_queue.length > max_size) {
     const key = cache_queue.shift();
     delete cache[key];
-    console.log(`Deleted ${key} from cache`);
   }
 }
 
