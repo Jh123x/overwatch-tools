@@ -14,7 +14,7 @@
 }
 
 .text_color {
-  color: #FA9C1E;
+  color: #fa9c1e;
 }
 
 a.link {
@@ -22,9 +22,9 @@ a.link {
 }
 
 .inherit_color {
-  color: inherit; 
+  color: inherit;
 }
 
-.MuiMenu-list {
+:global(.MuiMenu-list) {
   background-color: black;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import './Navbar.css';
+import styles from './Navbar.module.css';
 import { Link } from 'react-router-dom';
 import {
   AppBar,
@@ -46,18 +46,18 @@ export function Navbar() {
 
   const icon = <img
     src='https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg'
-    className='icon'
+    className={styles.icon}
     alt='logo'
   />;
 
   return (
     <AppBar
       position='static'
-      className='navbar'
+      className={styles.navbar}
     >
       <Container
         maxWidth="xl"
-        className="container_background"
+        className={styles.container_background}
       >
         <Toolbar
           disableGutters
@@ -93,7 +93,7 @@ export function Navbar() {
               {items.map((nav_item) => (
                 <Link
                   to={nav_item.path}
-                  className="link inherit_color"
+                  className={[styles.link, styles.inherit_color].join(' ')}
                   key={nav_item.label}
                 >
                   <MenuItem
@@ -101,7 +101,7 @@ export function Navbar() {
                   >
                     <Typography
                       textAlign="center"
-                      className="text_color"
+                      className={styles.text_color}
                     >
                       {nav_item.label}
                     </Typography>
@@ -123,14 +123,15 @@ export function Navbar() {
               <Link
                 key={nav_item.label}
                 to={nav_item.path}
-                className="link"
+                className={styles.link}
               >
                 <Button
                   key={nav_item.label}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, display: 'block' }}
+                  className={styles.text_color}
                 >
-                  <p className='text_color'>{nav_item.label}</p>
+                  {nav_item.label}
                 </Button>
               </Link>
             ))}
