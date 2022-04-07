@@ -1,22 +1,18 @@
 import React from "react";
 import { VariableForm } from "../components/VariableFormField";
-
+import { mainLogo } from "../components/MainLogo";
 
 export function TeamBalancingPage() {
     return (
         <div className='App'>
-            <header className='App-header'>
-                <img
-                    src='https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg'
-                    className='App-logo'
-                    alt='logo'
-                />
+            <div className='App-header'>
+                {mainLogo}
                 <h1>Team Balancing</h1>
                 <div className='center-div'>
                     <p>Balance Teams based on current teammates</p>
                 </div>
                 <VariableForm />
-            </header>
+            </div>
         </div>
     )
 }

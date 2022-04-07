@@ -1,15 +1,12 @@
 import React from 'react';
 import './Homepage.css';
+import { mainLogo } from '../components/MainLogo';
 
 function homepage() {
   return (
     <div className='App'>
-      <header className='App-header'>
-        <img
-          src='https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg'
-          className='App-logo'
-          alt='logo'
-        />
+      <div className='App-header'>
+        {mainLogo}
         <h1>Welcome to the Overwatch Toolkit!</h1>
         <div className='center-div'>
           <p>
@@ -23,7 +20,7 @@ function homepage() {
             Stay Tuned!
           </p>
         </div>
-      </header>
+      </div>
     </div>
   );
 }

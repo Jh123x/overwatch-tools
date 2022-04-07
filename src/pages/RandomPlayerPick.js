@@ -1,4 +1,5 @@
 import React from "react";
+import { mainLogo } from "../components/MainLogo";
 import { pick_random } from "../core/random";
 
 export class RandomPlayerPage extends React.Component {
@@ -29,11 +30,7 @@ export class RandomPlayerPage extends React.Component {
     render() {
         return (<div className='App'>
             <header className='App-header'>
-                <img
-                    src='https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg'
-                    className='App-logo'
-                    alt='logo'
-                />
+                {mainLogo}
                 <div>
                     <h1>Random Player</h1>
                     <h4>Current players</h4>

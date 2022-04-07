@@ -1,15 +1,12 @@
 import './PlayerLookup.css';
 import { PlayerLookupForm } from '../components/PlayerLookupForm';
+import { mainLogo } from '../components/MainLogo';
 
 function PlayerLookupPage() {
   return (
     <div className='App'>
-      <header className='App-header'>
-        <img
-          src='https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg'
-          className='App-logo'
-          alt='logo'
-        />
+      <div className='App-header'>
+        {mainLogo}
         <div>
           <h1>Player Lookup toolkit</h1>
           <p>Note that the name is case sensitive</p>
@@ -17,7 +14,7 @@ function PlayerLookupPage() {
         </div>
         <PlayerLookupForm />
         <br />
-      </header>
+      </div>
     </div>
   );
 }
