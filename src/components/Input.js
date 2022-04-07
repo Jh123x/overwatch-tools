@@ -1,23 +1,15 @@
-import { createTheme, Input, ThemeProvider } from '@mui/material';
-import { orange } from '@mui/material/colors';
+import { TextField } from '@mui/material';
 
-
-const theme = createTheme({
-    palette: {
-        main: {
-            color: orange[50],
-        }
-    }
-})
 
 export function PrimaryInput(props) {
-    return <ThemeProvider theme={theme}>
-        <Input
-        style={{
-            color: "#fa9c1e"
+    return <TextField
+        sx={{
+            input: { color: "#fa9c1e" },
+            label: { color: "#fa9c1e" },
+            margin: 1
         }}
         {...props}
     />
-    </ThemeProvider>
+
 }
 

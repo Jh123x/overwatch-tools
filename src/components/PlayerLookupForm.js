@@ -150,24 +150,20 @@ export class PlayerLookupForm extends React.Component {
     return (
       <div className='player-lookup-form'>
         <form onSubmit={this.handleSubmit}>
-          <label>Player Name: </label>
           <br />
           <PrimaryInput
             type='text'
             name='playerName'
-            placeholder='Player Name'
+            label="Player Name"
             onChange={this.handleChange}
           />
-          <br />
-          <label>Battle Tag: </label>
           <br />
           <PrimaryInput
             type='number'
             name='battleTag'
-            placeholder='Battle Tag'
+            label="Battle Tag"
             onChange={this.handleChange}
           />
-          <br />
           <br />
           <PrimaryButton
             type="submit"
