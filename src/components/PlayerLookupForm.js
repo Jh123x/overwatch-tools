@@ -12,6 +12,12 @@ export class PlayerLookupForm extends React.Component {
       playerName: '',
       result: 'Please key in a name and battletag to get started',
     };
+
+    // Caching logic
+    this.cache_queue = [];
+    this.cache = {};
+    this.max_size = 10;
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.update_result = this.update_result.bind(this);
@@ -113,6 +119,12 @@ export class PlayerLookupForm extends React.Component {
       </div>
     );
   }
+  clean_cache() {
+    while (Object.keys(this.cache).length > this.max_size) {
+      const key = this.cache_queue.shift();
+      delete this.cache[key];
+    }
+  }
 
   update_result() {
     this.setState({
@@ -124,15 +136,25 @@ export class PlayerLookupForm extends React.Component {
       });
       return;
     }
+    const key = this.state.playerName + "#" + this.state.battleTag;
+    if (this.cache[key]) {
+      this.setState({
+        result: this.render_response(this.cache[key]),
+      })
+      return;
+    }
 
     player_lookup(
       encodeURI(this.state.playerName),
       encodeURI(this.state.battleTag)
     )
       .then((response) => {
+        this.cache[key] = response;
+        this.cache_queue.push(key);
         this.setState({
           result: this.render_response(response),
         });
+        this.clean_cache();
       })
       .catch((error) => {
         this.setState({ result: `${error}` });
