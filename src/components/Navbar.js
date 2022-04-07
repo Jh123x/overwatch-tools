@@ -129,9 +129,8 @@ export function Navbar() {
                   key={nav_item.label}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, display: 'block' }}
-                  className={styles.text_color}
                 >
-                  {nav_item.label}
+                  <div className={styles.text_color}>{nav_item.label}</div>
                 </Button>
               </Link>
             ))}
