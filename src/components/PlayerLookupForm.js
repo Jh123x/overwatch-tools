@@ -1,7 +1,9 @@
 import React from 'react';
-import { Button, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import styles from './PlayerLookupForm.module.css';
 import { player_lookup } from '../core/api';
+import { PrimaryButton } from './Button';
+import { PrimaryInput } from './Input';
 
 
 export class PlayerLookupForm extends React.Component {
@@ -150,35 +152,28 @@ export class PlayerLookupForm extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <label>Player Name: </label>
           <br />
-          <Input
+          <PrimaryInput
             type='text'
             name='playerName'
             placeholder='Player Name'
-            className={styles.text_color}
             onChange={this.handleChange}
           />
           <br />
           <label>Battle Tag: </label>
           <br />
-          <Input
+          <PrimaryInput
             type='number'
             name='battleTag'
             placeholder='Battle Tag'
-            className={styles.text_color}
             onChange={this.handleChange}
-            style={{
-              color: '#fa9c1e'
-            }}
           />
           <br />
           <br />
-          <Button
+          <PrimaryButton
             type="submit"
-            variant="contained"
-            id={styles.search_button}
           >
             Search
-          </Button>
+          </PrimaryButton>
         </form>
         <br />
         <div id='result'>{this.state.result}</div>
