@@ -2,6 +2,10 @@ import React from "react";
 import { player_lookup } from "../core/api";
 import { containsObject } from "../core/utils";
 import { player_balance_teams } from "../core/team_balancing";
+import { PrimaryButton } from "./Button";
+import { PrimaryInput } from "./Input";
+import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import { SelectMenu, OrangeMenuItem } from "./SelectMenu";
 
 export class VariableForm extends React.Component {
     constructor(props) {
@@ -9,10 +13,12 @@ export class VariableForm extends React.Component {
         this.state = {
             formValues: new Set(),
             currentValue: { playerName: '', battleTag: '' },
-            results: "Enter some players to form a team."
+            results: "Enter some players to form a team.",
+            roleSelection: {}
         }
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleRoleSelection = this.handleRoleSelection.bind(this);
     }
 
     handleChange(event) {
@@ -22,17 +28,26 @@ export class VariableForm extends React.Component {
         this.setState({ currentValue: { ...curr } });
     }
 
+    handleRoleSelection(event, playerName, battleTag) {
+        event.preventDefault();
+        const result = this.state.roleSelection;
+        result[playerName + "#" + battleTag] = event.target.value;
+        this.setState({ roleSelection: result });
+    }
+
     clearForm() {
         document.getElementById("player_name").value = "";
         document.getElementById("battle_tag").value = "";
     }
 
     addFormFields() {
+        const playerName = this.state.currentValue.playerName;
+        const battleTag = this.state.currentValue.battleTag;
         if (containsObject(this.state.currentValue, this.state.formValues, ['playerName', 'battleTag'])) {
             alert("Player already exists!");
             return;
         }
-        if (this.state.currentValue.playerName === '' || this.state.currentValue.battleTag === '') {
+        if (playerName === '' || battleTag === '') {
             alert("Please fill out all fields!");
             return;
         }
@@ -43,50 +58,43 @@ export class VariableForm extends React.Component {
             currentValue: { playerName: '', battleTag: '' }
         }))
         this.clearForm();
+        const result = this.state.roleSelection;
+        result[playerName + "#" + battleTag] = "Overall";
+        this.setState({ roleSelection: result });
     }
     removeFormField(player_name, battle_tag) {
         let values = new Set([...this.state.formValues].filter(({ playerName, battleTag }) => playerName !== player_name && battleTag !== battle_tag));
         this.setState({ formValues: values });
     }
 
+    generateTable(team_name, team) {
+        return <div>
+            <h3>{team_name}</h3>
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Player</TableCell>
+                        <TableCell>Role</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {team.map(({ playerName, battleTag, role }) => (
+                        <TableRow key={playerName + "#" + battleTag}>
+                            <TableCell>{playerName + "#" + battleTag}</TableCell>
+                            <TableCell>{role}</TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>;
+    }
+
     populateResults(results) {
         this.setState({ results: "Generating Teams" });
         let [team1, team2] = player_balance_teams(results);
         let result = (<div>
-            <h3>Team 1</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>Role</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {team1.map(({ playerName, battleTag, role }) => (
-                        <tr key={playerName + "#" + battleTag}>
-                            <td>{playerName + "#" + battleTag}</td>
-                            <td>{role}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <h3>Team 2</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Player</th>
-                        <th>role</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {team2.map(({ playerName, battleTag, role }) => (
-                        <tr key={playerName + "#" + battleTag}>
-                            <td>{playerName + "#" + battleTag}</td>
-                            <td>{role}</td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            {this.generateTable("Team 1", team1)}
+            {this.generateTable("Team 2", team2)}
         </div>);
         this.setState({ results: result });
     }
@@ -107,11 +115,11 @@ export class VariableForm extends React.Component {
         this.populateResults(results);
     }
 
-    async fillLookup(playerName, battleTag, role) {
-
-        let result = await player_lookup(playerName, battleTag);
+    async fillLookup(playerName, battleTag) {
+        const role = this.state.roleSelection[playerName + "#" + battleTag];
         const id = playerName + "_" + battleTag + "_overall";
         const elem = document.getElementById(id);
+        let result = await player_lookup(playerName, battleTag);
         if (result.rating === null) {
             elem.value = 0;
             console.error(`Error: ${result.error}`);
@@ -121,7 +129,7 @@ export class VariableForm extends React.Component {
             elem.value = result.rating || 0;
             return;
         }
-        if (result.ratings === null) {
+        if (result.ratings === null || result.ratings === undefined) {
             return 0;
         }
         for (let i = 0; i < result.ratings.length; ++i) {
@@ -134,34 +142,58 @@ export class VariableForm extends React.Component {
         elem.value = 0;
     }
 
+    render_row(playerName, battleTag) {
+        return <TableRow key={playerName + "#" + battleTag}>
+            <TableCell>{playerName}</TableCell>
+            <TableCell>{battleTag}</TableCell>
+            <TableCell>
+                <PrimaryInput
+                    id={playerName + "_" + battleTag + "_overall"}
+                    type="number"
+                    label="Rating"
+                    placeholder="Rating"
+                />
+            </TableCell>
+            <TableCell>
+                <SelectMenu
+                    id={playerName + "_role"}
+                    label="Role"
+                    defaultValue="Overall"
+                    onChange={(event) => this.handleRoleSelection(event, playerName, battleTag)}
+                >
+                    <OrangeMenuItem value="Overall" key="Overall">
+                        Overall
+                    </OrangeMenuItem>
+                    <OrangeMenuItem value="Tank" key="Tank">
+                        Tank
+                    </OrangeMenuItem>
+                    <OrangeMenuItem value="Damage" key="Damage">
+                        Damage
+                    </OrangeMenuItem>
+                    <OrangeMenuItem value="Support" key="Support">
+                        Support
+                    </OrangeMenuItem>
+                </SelectMenu>
+                <PrimaryButton
+                    className="button remove"
+                    onClick={() => this.removeFormField(playerName, battleTag)}
+                >
+                    Remove
+                </PrimaryButton>
+                <PrimaryButton
+                    className="button lookup"
+                    onClick={async () => this.fillLookup(playerName, battleTag)}
+                >
+                    Lookup
+                </PrimaryButton>
+            </TableCell>
+        </TableRow>
+    }
+
     displayResults() {
         let results = []
         this.state.formValues.forEach(({ playerName, battleTag }) => results.push(
-            <tr key={playerName}>
-                <th>{playerName}</th>
-                <th>{battleTag}</th>
-                <th>
-                    <label>Rating</label><input id={playerName + "_" + battleTag + "_overall"} type="number" /><br />
-                </th>
-                <th>
-                    <select id={playerName + "_role"}>
-                        <option>
-                            Overall
-                        </option>
-                        <option>
-                            Tank
-                        </option>
-                        <option>
-                            Damage
-                        </option>
-                        <option>
-                            Support
-                        </option>
-                    </select>
-                    <button className="button remove" onClick={() => this.removeFormField(playerName, battleTag)}>Remove</button>
-                    <button className="button lookup" onClick={async () => this.fillLookup(playerName, battleTag, document.getElementById(playerName + "_role").value)}>Lookup</button>
-                </th>
-            </tr>
+            this.render_row(playerName, battleTag)
         ));
         return results;
     }
@@ -184,15 +216,44 @@ export class VariableForm extends React.Component {
                 </table>
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-inline">
-                        <label>Name</label>
-                        <input type="text" id="player_name" name="playerName" onChange={this.handleChange} />
-                        <label>Tag</label>
-                        <input type="number" id="battle_tag" name="battleTag" onChange={this.handleChange} />
+                        <PrimaryInput
+                            type="text"
+                            label="Name"
+                            id="player_name"
+                            name="playerName"
+                            placeholder="Player Name"
+                            onChange={this.handleChange}
+                        />
+                        <PrimaryInput
+                            label="Tag"
+                            type="number"
+                            id="battle_tag"
+                            name="battleTag"
+                            placeholder="Battle Tag"
+                            onChange={this.handleChange}
+                        />
                     </div>
                     <div className="button-section">
-                        <button className="button add" type="button" onClick={() => this.addFormFields()}>Add</button>
-                        <button className="button clear" type="button" onClick={() => this.clearForm()}>Clear form</button>
-                        <button className="button submit" type="submit">Create Teams</button>
+                        <PrimaryButton
+                            className="button add"
+                            type="button"
+                            onClick={() => this.addFormFields()}
+                        >
+                            Add
+                        </PrimaryButton>
+                        <PrimaryButton
+                            className="button clear"
+                            type="button"
+                            onClick={() => this.clearForm()}
+                        >
+                            Clear form
+                        </PrimaryButton>
+                        <PrimaryButton
+                            className="button submit"
+                            type="submit"
+                        >
+                            Create Teams
+                        </PrimaryButton>
                     </div>
                 </form>
                 <div id="results">
