@@ -115,7 +115,6 @@ export const PlayerMatchmake = () => {
             groups = groups.filter(p => p.players === max_p);
         }
         return groups.map((player_group, index) => {
-            console.log(player_group.avg_rank);
             return <TableRow key={index}>
                 {
                     [
