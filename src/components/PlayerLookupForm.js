@@ -104,8 +104,12 @@ export class PlayerLookupForm extends React.Component {
           <Table aria-label="results table">
             <TableHead>
               <TableRow>
-                <TableCell className={styles.text_color}>Role</TableCell>
-                <TableCell className={styles.text_color}>Rating</TableCell>
+                <TableCell className={styles.text_color}>
+                  Role
+                </TableCell>
+                <TableCell className={styles.text_color}>
+                  Rating
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

@@ -29,6 +29,7 @@ export function Navbar() {
     createNavBarItem('Stats', '/lookup'),
     createNavBarItem('Team', '/team-balancing'),
     createNavBarItem('Random', '/random-player-pick'),
+    createNavBarItem('Match', '/player-matchmake')
   ];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);

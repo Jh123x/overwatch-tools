@@ -9,6 +9,7 @@ import PlayerLookupPage from './pages/PlayerLookup';
 import Homepage from './pages/Homepage';
 import { TeamBalancingPage } from './pages/TeamBalancing';
 import { RandomPlayerPage } from './pages/RandomPlayerPick';
+import { PlayerMatchmake } from './pages/MatchMake';
 
 
 import reportWebVitals from './reportWebVitals';
@@ -23,6 +24,7 @@ root.render(
       <Route path='/team-balancing' element={<TeamBalancingPage />} />
       <Route path='/lookup' element={<PlayerLookupPage />} />
       <Route path='/random-player-pick' element={<RandomPlayerPage />} />
+      <Route path='/player-matchmake' element={<PlayerMatchmake />} />
     </Routes>
   </BrowserRouter>
 );
