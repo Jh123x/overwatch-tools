@@ -1,4 +1,4 @@
-import { player_balance_teams, player_matching, PlayerGroup } from './team_balancing';
+import { player_balance_teams, player_matching, PlayerGroup, calculate_player_average_rank } from './team_balancing';
 
 const public_player = {
   competitiveStats: {
@@ -93,6 +93,79 @@ function create_player(name, tank, dps, support) {
     support: support,
   }
 }
+
+
+//Player avg test
+test("Check player Avg Tank", () => {
+  const player = create_player("Kappa123#21457", 2, 2, 2);
+  const player2 = create_player("Krusher98#1666", 4, 4, 4);
+  const avg_rank = calculate_player_average_rank([player, player2], [], []);
+  expect(avg_rank).toBe(3);
+})
+
+test("Check player Avg Tank / Dps", () => {
+  const player = create_player("Kappa123#21457", 2, 2, 2);
+  const player2 = create_player("Krusher98#1666", 4, 4, 4);
+  const avg_rank = calculate_player_average_rank([player2], [player], []);
+  expect(avg_rank).toBe(3);
+})
+
+test("Check player Avg DPS / Support", () => {
+  const player = create_player("Kappa123#21457", 2, 2, 2);
+  const player2 = create_player("Krusher98#1666", 4, 4, 4);
+  const avg_rank = calculate_player_average_rank([], [player2], [player]);
+  expect(avg_rank).toBe(3);
+})
+
+// Player Group test
+test("Check full player Group", () => {
+  const player = create_player("Kappa123#21457", 1, 2, 3);
+  const player2 = create_player("Krusher98#1666", 2, 4, 5);
+  const player3 = create_player("Krusher98#1666", 6, 3, 7);
+  const player4 = create_player("Krusher98#1666", 9, 4, 8);
+  const player5 = create_player("Krusher98#1666", 10, 55, 5);
+  const player6 = create_player("Krusher98#1666", 63, 43, 6);
+  const grp = new PlayerGroup([player, player2], [player3, player4], [player5, player6]);
+  expect(grp.avg_rank)
+    .toEqual(21 / 6);
+
+  expect(grp.min_rank)
+    .toEqual(1);
+
+  expect(grp.max_rank)
+    .toEqual(6);
+
+  expect(grp.can_be_added(player))
+    .toBe(false);
+});
+
+test("Check partial player group", () => {
+  const player1 = create_player("Kappa123#21457", 1000, 2000, 3000);
+  const player2 = create_player("Krusher98#1666", 2000, 4000, 5000);
+  const grp = new PlayerGroup([player1], [player2], []);
+  expect(grp.avg_rank)
+    .toEqual(2500);
+
+  expect(grp.min_rank)
+    .toEqual(1000);
+
+  expect(grp.max_rank)
+    .toEqual(4000);
+})
+
+test("Check empty player group", () =>{
+  const grp = new PlayerGroup([], [], []);
+  expect(grp.avg_rank)
+    .toEqual(-1);
+
+  expect(grp.min_rank)
+    .toEqual(-1);
+
+  expect(grp.max_rank)
+    .toEqual(-1);
+})
+
+
 
 // Player Matching tests
 test('Player match Empty players', () => {
