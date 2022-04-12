@@ -1,4 +1,6 @@
 import React from "react";
+import { PrimaryButton } from "../components/Button";
+import { PrimaryInput } from "../components/Input";
 import { mainLogo } from "../components/MainLogo";
 import { pick_random } from "../core/random";
 
@@ -41,12 +43,11 @@ export class RandomPlayerPage extends React.Component {
                         {this.state.chosen}
                     </div>
                     <form>
-                        <label>Player Name</label>
                         <br />
-                        <input id='playerName' type='text' name='playerName' />
+                        <PrimaryInput id='playerName' type='text' name='playerName' label="Player Name" />
                         <br />
-                        <button type='add' onClick={this.handleAdd}>Add</button>
-                        <button type='submit' onClick={this.handleSubmit}>Pick Random</button>
+                        <PrimaryButton type='add' onClick={this.handleAdd}>Add</PrimaryButton>
+                        <PrimaryButton type='submit' onClick={this.handleSubmit}>Pick Random</PrimaryButton>
                     </form>
                 </div>
                 <br />
