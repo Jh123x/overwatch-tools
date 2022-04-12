@@ -41,7 +41,7 @@ export function player_balance_teams(players) {
 
 export function calculate_player_average_rank(tank, healer, dps) {
   let num = tank.length + healer.length + dps.length;
-  if (num == 0) {
+  if (num === 0) {
     return Number('infinity');
   }
   let sum = 0;
