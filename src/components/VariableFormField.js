@@ -198,22 +198,26 @@ export class VariableForm extends React.Component {
         return results;
     }
 
+    get_table() {
+        return <table id="table">
+            <thead>
+                <tr>
+                    <th>Player Name</th>
+                    <th>Battle Tag</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {this.displayResults()}
+            </tbody>
+        </table>;
+    }
+
     render() {
         return (
             <div key="Results">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Player Name</th>
-                            <th>Battle Tag</th>
-                            <th>Rating</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.displayResults()}
-                    </tbody>
-                </table>
+                {this.state.formValues.size > 0 ? this.get_table() : null}
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-inline">
                         <PrimaryInput
@@ -259,7 +263,7 @@ export class VariableForm extends React.Component {
                 <div id="results">
                     {this.state.results}
                 </div>
-            </div>
+            </div >
 
         );
     }
