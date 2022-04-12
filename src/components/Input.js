@@ -10,6 +10,5 @@ export function PrimaryInput(props) {
         }}
         {...props}
     />
-
 }
 
