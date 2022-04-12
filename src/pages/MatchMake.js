@@ -96,7 +96,7 @@ export const PlayerMatchmake = () => {
         const players = state.curr_players;
         const results = player_matching(players).splice(1);
         results.sort((a, b) => a.avg_rank - b.avg_rank);
-        setState({ ...state, result: results.splice(1) });
+        setState({ ...state, result: results });
     }
 
     const generate_player_table = (players, index_key) => {
