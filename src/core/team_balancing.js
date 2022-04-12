@@ -94,24 +94,26 @@ export class PlayerGroup {
     this.damage = damage;
     this.support = support;
     this.players = tanks.length + damage.length + support.length;
-    if (this.players <= 0) {
+
+    if (this.players == 0) {
       this.avg_rank = -1;
       this.min_rank = -1;
       this.max_rank = -1;
-    } else {
-      this.avg_rank = calculate_player_average_rank(tanks, support, damage);
-      const rank = [];
-      for (let i = 0; i < tanks.length; ++i) {
-        rank.push(tanks[i].tank);
-      }
-      for (let i = 0; i < support.length; ++i) {
-        rank.push(support[i].support);
-      }
-      for (let i = 0; i < damage.length; ++i) {
-        rank.push(damage[i].damage);
-      }
-      [this.min_rank, this.max_rank] = get_min_max_rank(rank);
+      return;
     }
+
+    this.avg_rank = calculate_player_average_rank(tanks, support, damage);
+    const rank = [];
+    for (let i = 0; i < tanks.length; ++i) {
+      rank.push(tanks[i].tank);
+    }
+    for (let i = 0; i < support.length; ++i) {
+      rank.push(support[i].support);
+    }
+    for (let i = 0; i < damage.length; ++i) {
+      rank.push(damage[i].damage);
+    }
+    [this.min_rank, this.max_rank] = get_min_max_rank(rank);
   }
 
   add_player(player, role) {
