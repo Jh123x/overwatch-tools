@@ -1,4 +1,4 @@
-import { player_balance_teams, player_matching } from './team_balancing';
+import { player_balance_teams, player_matching, PlayerGroup } from './team_balancing';
 
 const public_player = {
   competitiveStats: {
@@ -77,7 +77,7 @@ const private_player = {
   ratings: null,
 };
 
-function create_player(name, tag, rating){
+function create_player_profile(name, tag, rating) {
   return {
     name: name,
     battleTag: tag,
@@ -85,14 +85,122 @@ function create_player(name, tag, rating){
   };
 }
 
+function create_player(name, tank, dps, support) {
+  return {
+    name: name,
+    tank: tank,
+    damage: dps,
+    support: support,
+  }
+}
+
 // Player Matching tests
 test('Player match Empty players', () => {
-  expect(player_matching([])).toEqual([]);
+  expect(player_matching([])).toEqual([new PlayerGroup([], [], [])]);
 });
 
-test('Player match One Player', () => {
-  expect(player_matching([public_player], 1, 1600)).toEqual([public_player]);
+test('Player match 1 player', () => {
+  const player = create_player('Kappa123#21457', 0, 0, 0);
+  expect(player_matching([player]))
+    .toEqual(
+      [
+        new PlayerGroup([], [], []),
+        new PlayerGroup([player], [], []),
+        new PlayerGroup([], [player], []),
+        new PlayerGroup([], [], [player])
+      ]
+    );
+})
+
+test('Player match 1 / 2', () => {
+  const player = create_player('Kappa123#21457', 0, 0, 0);
+  const player2 = create_player('Krusher98#1666', 1001, 1001, 1001);
+  const result = player_matching([player, player2]);
+  expect(result)
+    .toEqual(
+      [
+        new PlayerGroup([], [], []),
+        new PlayerGroup([player], [], []),
+        new PlayerGroup([], [player], []),
+        new PlayerGroup([], [], [player]),
+        new PlayerGroup([player2], [], []),
+        new PlayerGroup([], [player2], []),
+        new PlayerGroup([], [], [player2])
+      ]
+    );
+})
+
+test('Match only 2 / 3', () => {
+  const player = create_player('Kappa123#21457', 0, 0, 0);
+  const player2 = create_player('Krusher98#1666', 2001, 2001, 2001);
+  const player3 = create_player('Krusher98#1667', 500, 500, 500);
+  const result = new Set(player_matching([player, player2, player3]));
+  expect(result)
+    .toEqual(
+      new Set([
+        new PlayerGroup([], [], []),
+        new PlayerGroup([player], [], []),
+        new PlayerGroup([], [player], []),
+        new PlayerGroup([], [], [player]),
+        new PlayerGroup([player2], [], []),
+        new PlayerGroup([], [player2], []),
+        new PlayerGroup([], [], [player2]),
+        new PlayerGroup([player3], [], []),
+        new PlayerGroup([], [player3], []),
+        new PlayerGroup([], [], [player3]),
+        new PlayerGroup([player, player3], [], []),
+        new PlayerGroup([player], [player3], []),
+        new PlayerGroup([player], [], [player3]),
+        new PlayerGroup([player3], [player], []),
+        new PlayerGroup([player3], [], [player]),
+        new PlayerGroup([], [player, player3], []),
+        new PlayerGroup([], [player], [player3]),
+        new PlayerGroup([], [], [player, player3]),
+        new PlayerGroup([], [player3], [player]),
+      ])
+    );
+})
+
+test('Player match 2 players', () => {
+  const player1 = create_player('Kappa123#21457', 0, 0, 0);
+  const player2 = create_player('Krusher98#1666', 0, 0, 0);
+  expect(player_matching([player1, player2])).toHaveLength(4 ** 2);
+})
+
+test('Player match 3 players', () => {
+  const player1 = create_player('Kappa123#21457', 0, 0, 0);
+  const player2 = create_player('Krusher98#1666', 0, 0, 0);
+  const player3 = create_player('Kappa123#214578', 0, 0, 0);
+  expect(player_matching([player1, player2, player3])).toHaveLength(4 ** 3);
+})
+
+test('Player match 4 players', () => {
+  const player1 = create_player('Kappa123#21457', 0, 0, 0);
+  const player2 = create_player('Krusher98#1666', 0, 0, 0);
+  const player3 = create_player('Kappa123#214578', 0, 0, 0);
+  const player4 = create_player('Krusher98#16666', 0, 0, 0);
+  expect(player_matching([player1, player2, player3, player4])).toHaveLength(4 ** 4);
+})
+
+test('Player match 5 players', () => {
+  const player1 = create_player('Kappa123#21457', 0, 0, 0);
+  const player2 = create_player('Krusher98#1666', 0, 0, 0);
+  const player3 = create_player('Kappa123#214578', 0, 0, 0);
+  const player4 = create_player('Krusher98#16666', 0, 0, 0);
+  const player5 = create_player('Kappa123#2145789', 0, 0, 0);
+  expect(player_matching([player1, player2, player3, player4, player5])).toHaveLength(4 ** 5);
 });
+
+test('Player match 6 players', () => {
+  const player1 = create_player('Kappa123#21457', 0, 0, 0);
+  const player2 = create_player('Krusher98#1666', 0, 0, 0);
+  const player3 = create_player('Kappa123#214578', 0, 0, 0);
+  const player4 = create_player('Krusher98#16666', 0, 0, 0);
+  const player5 = create_player('Kappa123#2145789', 0, 0, 0);
+  const player6 = create_player('Krusher98#166666', 0, 0, 0);
+  expect(player_matching([player1, player2, player3, player4, player5, player6])).toHaveLength(4 ** 6);
+});
+
 
 // Player Balance teams tests
 test('Player balance Empty Players', () => {
@@ -112,8 +220,8 @@ test('Player balance Two Players', () => {
 
 test('Player balance 4 players', () => {
   let players = [];
-  for(let i = 0; i < 4; i++){
-    players.push(create_player(`Player${i}`, `#${i}`, i));
+  for (let i = 0; i < 4; i++) {
+    players.push(create_player_profile(`Player${i}`, `#${i}`, i));
   }
   let [team1, team2] = player_balance_teams(players);
   expect(new Set(team1.map(player => player.name))).toEqual(new Set(['Player0', 'Player3']));
@@ -122,8 +230,8 @@ test('Player balance 4 players', () => {
 
 test('Player balance 5 players', () => {
   let players = [];
-  for(let i = 0; i < 5; i++){
-    players.push(create_player(`Player${i}`, `#${i}`, 10 - i));
+  for (let i = 0; i < 5; i++) {
+    players.push(create_player_profile(`Player${i}`, `#${i}`, 10 - i));
   }
   let [team1, team2] = player_balance_teams(players);
   expect(new Set(team1.map(p => p.name))).toEqual(new Set(['Player0', 'Player3', 'Player4']));
