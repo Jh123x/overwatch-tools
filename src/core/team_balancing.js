@@ -46,13 +46,13 @@ export function calculate_player_average_rank(tank, healer, dps) {
   }
   let sum = 0;
   for (let i = 0; i < tank.length; ++i) {
-    sum += tank[i].tank;
+    sum += parseInt(tank[i].tank);
   }
   for (let i = 0; i < healer.length; ++i) {
-    sum += healer[i].support;
+    sum += parseInt(healer[i].support);
   }
   for (let i = 0; i < dps.length; ++i) {
-    sum += dps[i].damage;
+    sum += parseInt(dps[i].damage);
   }
   return sum / num;
 }
@@ -95,7 +95,7 @@ export class PlayerGroup {
     this.support = support;
     this.players = tanks.length + damage.length + support.length;
 
-    if (this.players == 0) {
+    if (this.players === 0) {
       this.avg_rank = -1;
       this.min_rank = -1;
       this.max_rank = -1;
