@@ -153,7 +153,7 @@ test("Check partial player group", () => {
     .toEqual(4000);
 })
 
-test("Check empty player group", () =>{
+test("Check empty player group", () => {
   const grp = new PlayerGroup([], [], []);
   expect(grp.avg_rank)
     .toEqual(-1);
