@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { createRoot } from "react-dom/client";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
@@ -20,7 +20,7 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
   <Box className={styles.top}>
-    <BrowserRouter>
+    <HashRouter>
       <Navbar />
       <Routes>
         <Route path="/" element={<Homepage />} />
@@ -30,6 +30,6 @@ root.render(
         <Route path="/player-matchmake" element={<PlayerMatchmake />} />
       </Routes>
       <Footer />
-    </BrowserRouter>
+    </HashRouter>
   </Box>
 );
