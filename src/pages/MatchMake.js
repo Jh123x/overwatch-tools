@@ -1,7 +1,6 @@
 import React from "react";
 import { player_matching } from "../core/team_balancing";
-import styles from "./MatchMake.module.css";
-import { mainLogo } from "../components/MainLogo";
+import styles from "./app.module.css";
 import {
   Checkbox,
   FormControlLabel,
@@ -14,6 +13,7 @@ import {
 import { PrimaryInput } from "../components/Input";
 import { PrimaryButton } from "../components/Button";
 import { player_lookup } from "../core/api";
+import style from "./app.module.css";
 
 export const PlayerMatchmake = () => {
   const [state, setState] = React.useState({
@@ -225,19 +225,13 @@ export const PlayerMatchmake = () => {
   };
 
   return (
-    <div className={styles.App}>
-      <div className={styles.App_header}>
-        {mainLogo}
+    <div className={style.App}>
+      <div className={style.header}>
         <h1>Match Page</h1>
         <p>
           Have a bunch of friends you want to play but don't know who can play
-          with each other?
-          <br />
-          Use this to find out what teams you can from a list of players.
-          <br />
-          <br />
-          <strong>Note: </strong>
-          This program runs in O(4 ^ n) time, so don't be too greedy.
+          with each other? Use this to find out what teams you can from a list
+          of players.
         </p>
         {state.result.length > 0 ? generate_table() : null}
         <br />

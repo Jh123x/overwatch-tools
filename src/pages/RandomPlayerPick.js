@@ -1,8 +1,8 @@
 import React from "react";
 import { PrimaryButton } from "../components/Button";
 import { PrimaryInput } from "../components/Input";
-import { mainLogo } from "../components/MainLogo";
 import { pick_random } from "../core/random";
+import style from "./app.module.css";
 
 export class RandomPlayerPage extends React.Component {
   constructor(props) {
@@ -36,9 +36,8 @@ export class RandomPlayerPage extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          {mainLogo}
+      <div className={style.App}>
+        <header className={style.header}>
           <div>
             <h1>Random Player</h1>
             <h4>Current players</h4>

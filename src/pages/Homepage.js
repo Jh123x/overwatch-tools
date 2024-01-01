@@ -1,14 +1,12 @@
 import React from "react";
-import "./Homepage.css";
-import { mainLogo } from "../components/MainLogo";
+import styles from "./app.module.css";
 
-function homepage() {
+const homepage = () => {
   return (
-    <div className="App">
-      <div className="App-header">
-        {mainLogo}
-        <h1>Welcome to the Overwatch Toolkit!</h1>
-        <div className="center-div">
+    <div className={styles.App}>
+      <div className={styles.header}>
+        <h1>Overwatch Toolkit!</h1>
+        <div className={styles.center}>
           <p>
             This toolkit is designed to help overwatch players make the games
             they play more enjoyable. Feel free to use the navigation bar to
@@ -23,6 +21,6 @@ function homepage() {
       </div>
     </div>
   );
-}
+};
 
 export default homepage;

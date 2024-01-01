@@ -1,0 +1,8 @@
+/* Fill up the entire screen */
+
+.top {
+  display: flex;
+  flex-direction: column;
+  height: inherit;
+  margin: 0;
+}

@@ -1,12 +1,11 @@
 import React from "react";
 import { VariableForm } from "../components/VariableFormField";
-import { mainLogo } from "../components/MainLogo";
+import style from "./app.module.css";
 
 export function TeamBalancingPage() {
   return (
-    <div className="App">
-      <div className="App-header">
-        {mainLogo}
+    <div className={style.App}>
+      <div className={style.header}>
         <h1>Team Balancing</h1>
         <div className="center-div">
           <p>Balance Teams based on current teammates</p>

@@ -6,7 +6,6 @@ export function PrimaryInput(props) {
         sx={{
             input: { color: "#fa9c1e" },
             label: { color: "#fa9c1e" },
-            margin: 1
         }}
         {...props}
     />

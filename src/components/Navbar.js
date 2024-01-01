@@ -1,6 +1,6 @@
-import React from 'react';
-import styles from './Navbar.module.css';
-import { Link } from 'react-router-dom';
+import React from "react";
+import styles from "./Navbar.module.css";
+import { Link } from "react-router-dom";
 import {
   AppBar,
   MenuItem,
@@ -10,26 +10,24 @@ import {
   Typography,
   IconButton,
   Toolbar,
-  Box
-} from '@mui/material';
+  Box,
+} from "@mui/material";
 
-
-function createNavBarItem(label, path, type = 'relative') {
+function createNavBarItem(label, path, type = "relative") {
   return {
     label: label,
     path: path,
-    type: type
-  }
+    type: type,
+  };
 }
 
-
-export function Navbar() {
+export const Navbar = () => {
   const items = [
-    createNavBarItem('Home', '/'),
-    createNavBarItem('Stats', '/lookup'),
-    createNavBarItem('Team', '/team-balancing'),
-    createNavBarItem('Random', '/random-player-pick'),
-    createNavBarItem('Match', '/player-matchmake')
+    createNavBarItem("Home", "/"),
+    createNavBarItem("Stats", "/lookup"),
+    createNavBarItem("Team", "/team-balancing"),
+    createNavBarItem("Random", "/random-player-pick"),
+    createNavBarItem("Match", "/player-matchmake"),
   ];
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -45,25 +43,18 @@ export function Navbar() {
     setAnchorElUser(null);
   };
 
-  const icon = <img
-    src='https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg'
-    className={styles.icon}
-    alt='logo'
-  />;
+  const icon = (
+    <img
+      src="https://upload.wikimedia.org/wikipedia/commons/5/55/Overwatch_circle_logo.svg"
+      className={styles.icon}
+      alt="logo"
+    />
+  );
 
   return (
-    <AppBar
-      position='static'
-      className={styles.navbar}
-    >
-      <Container
-        maxWidth="xl"
-        className={styles.container_background}
-      >
-        <Toolbar
-          disableGutters
-          color='inherit'
-        >
+    <AppBar position="static" className={styles.navbar}>
+      <Container maxWidth="xl" className={styles.container_background}>
+        <Toolbar disableGutters color="inherit">
           <Box>
             <IconButton
               size="small"
@@ -72,7 +63,7 @@ export function Navbar() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-              sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+              sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
             >
               {icon}
             </IconButton>
@@ -80,13 +71,13 @@ export function Navbar() {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
@@ -94,12 +85,10 @@ export function Navbar() {
               {items.map((nav_item) => (
                 <Link
                   to={nav_item.path}
-                  className={[styles.link, styles.inherit_color].join(' ')}
+                  className={[styles.link, styles.inherit_color].join(" ")}
                   key={nav_item.label}
                 >
-                  <MenuItem
-                    onClick={handleCloseNavMenu}
-                  >
+                  <MenuItem onClick={handleCloseNavMenu}>
                     <Typography
                       textAlign="center"
                       className={styles.text_color}
@@ -115,11 +104,11 @@ export function Navbar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}
+            sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}
           >
             {icon}
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {items.map((nav_item) => (
               <Link
                 key={nav_item.label}
@@ -129,7 +118,7 @@ export function Navbar() {
                 <Button
                   key={nav_item.label}
                   onClick={handleCloseNavMenu}
-                  sx={{ my: 2, display: 'block' }}
+                  sx={{ my: 2, display: "block" }}
                 >
                   <div className={styles.text_color}>{nav_item.label}</div>
                 </Button>
@@ -139,17 +128,17 @@ export function Navbar() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -157,6 +146,6 @@ export function Navbar() {
           </Box>
         </Toolbar>
       </Container>
-    </AppBar >
+    </AppBar>
   );
-}
+};

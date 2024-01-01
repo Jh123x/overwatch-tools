@@ -1,12 +1,10 @@
-import "./PlayerLookup.css";
 import { PlayerLookupForm } from "../components/PlayerLookupForm";
-import { mainLogo } from "../components/MainLogo";
+import style from "./app.module.css";
 
 function PlayerLookupPage() {
   return (
-    <div className="App">
-      <div className="App-header">
-        {mainLogo}
+    <div className={style.App}>
+      <div className={style.header}>
         <div>
           <h1>Player Lookup toolkit</h1>
           <p>Note that the name is case sensitive</p>
