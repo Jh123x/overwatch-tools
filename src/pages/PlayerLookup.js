@@ -1,11 +1,11 @@
-import './PlayerLookup.css';
-import { PlayerLookupForm } from '../components/PlayerLookupForm';
-import { mainLogo } from '../components/MainLogo';
+import "./PlayerLookup.css";
+import { PlayerLookupForm } from "../components/PlayerLookupForm";
+import { mainLogo } from "../components/MainLogo";
 
 function PlayerLookupPage() {
   return (
-    <div className='App'>
-      <div className='App-header'>
+    <div className="App">
+      <div className="App-header">
         {mainLogo}
         <div>
           <h1>Player Lookup toolkit</h1>
